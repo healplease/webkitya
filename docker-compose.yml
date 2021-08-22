@@ -14,7 +14,7 @@ services:
     ports: 
       - "5000:5000"
     depends_on: 
-      - database
+      - mongodb
     command: sh -c "/wait && flask run --host 0.0.0.0 --reload --debugger"
     
   mongodb:

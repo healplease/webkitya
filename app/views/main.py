@@ -1,7 +1,12 @@
-from flask import Blueprint, render_template
+from flask import Blueprint
+
+from app.models.painting import Painting
 
 main_bp = Blueprint("main", __name__)
 
+
 @main_bp.route("/")
 def index():
-    return "Hello world"
+    Painting.objects.create(name="Image " + str(Painting.objects.all().count()))
+    paintings = Painting.objects.all()
+    return ", ".join(x.name for x in paintings)

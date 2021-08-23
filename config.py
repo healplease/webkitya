@@ -4,9 +4,9 @@ import os
 class Config():
     SECRET_KEY = os.environ.get("FLASK_SECRET_KEY")
 
-    MONGODB_DB = "kitya-dev"
-    MONGODB_HOST = "mongodb"
-    MONGODB_PORT = 27017
+    IMGUR_CLIENT_ID = os.environ.get("IMGUR_CLIENT_ID")
+    IMGUR_CLIENT_SECRET = os.environ.get("IMGUR_CLIENT_SECRET")
+    IMGUR_ALBUM_NAME = os.environ.get("IMGUR_ALBUM_NAME")
 
 
 class LocalConfig(Config):
@@ -22,7 +22,7 @@ class DevelopmentConfig(HerokuConfig, Config):
 
 
 class ProductionConfig(HerokuConfig, Config):
-    MONGODB_DB = "kitya-prod"
+    pass
 
 
 environment_configs = {

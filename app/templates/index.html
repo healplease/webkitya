@@ -5,25 +5,32 @@
     <br>
     {% include "include/modalpicture.html" %}
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 {% for image in images %}
-                    {% if loop.index % 3 == 1 %}
+                    {% if loop.index % 4 == 1 %}
                         {% include "include/imagecard.html" %}
                     {% endif %}
                 {% endfor %}
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 {% for image in images %}
-                    {% if loop.index % 3 == 2 %}
+                    {% if loop.index % 4 == 2 %}
                         {% include "include/imagecard.html" %}
                     {% endif %}
                 {% endfor %}
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 {% for image in images %}
-                    {% if loop.index % 3 == 0 %}
+                    {% if loop.index % 4 == 3 %}
+                        {% include "include/imagecard.html" %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-sm-3">
+                {% for image in images %}
+                    {% if loop.index % 4 == 0 %}
                         {% include "include/imagecard.html" %}
                     {% endif %}
                 {% endfor %}

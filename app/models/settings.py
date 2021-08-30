@@ -6,34 +6,40 @@ from mongoengine import (
     EmbeddedDocument,
     StringField,
     ListField,
-    EmbeddedDocumentListField,
+    ReferenceField,
     URLField,
     DateTimeField,
     BooleanField
 )
 
 
-class Admin(EmbeddedDocument):
-    login = StringField(required=True, unique=True)
+class Admin(Document):
+    username = StringField(required=True, unique=True)
     password_hash = StringField(required=True)
-    last_loggen_in = DateTimeField(default=datetime.utcnow)
+    last_login = DateTimeField(default=datetime.utcnow)
     is_owner = BooleanField(default=False)
+    disabled = BooleanField(default=False)
 
     @classmethod
     def new(cls, username, password):
-        return cls(login=username, password_hash=generate_password_hash(password))
+        return cls.objects.create(username=username, password_hash=generate_password_hash(password))
+
+    @property
+    def last_login_timestamp(self):
+        return int(self.last_login.timestamp())
 
     @property
     def as_dict(self):
         return {
-            "login": self.login,
+            "username": self.username,
             "password_hash": self.password_hash,
-            "last_logged_in": self.last_loggen_in,
-            "is_owner": self.is_owner
+            "last_login": self.last_login_timestamp,
+            "is_owner": self.is_owner,
+            "disabled": self.disabled
         }
 
 
-class SocialMedia(EmbeddedDocument):
+class SocialMedia(Document):
     icon = URLField()
     link = URLField()
 
@@ -47,8 +53,8 @@ class SocialMedia(EmbeddedDocument):
 
 class Settings(Document):
     environment = StringField(required=True, unique=True)
-    admins = EmbeddedDocumentListField(Admin)
-    social_medias = EmbeddedDocumentListField(SocialMedia)
+    admins = ListField(ReferenceField(Admin))
+    social_medias = ListField(ReferenceField(SocialMedia))
     albums = ListField(URLField())
 
     def get_album_ids(self):
@@ -62,3 +68,7 @@ class Settings(Document):
             "social_medias": [x.as_dict for x in self.social_medias],
             "albums": self.albums
         }
+
+    @classmethod
+    def get(cls, env):
+        return cls.objects(environment=env).first()

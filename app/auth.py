@@ -14,7 +14,7 @@ def verify_password(username, password):
     if not settings or not settings.admins:
         return False
 
-    admins = {admin.login: admin.password_hash for admin in settings.admins}
+    admins = {admin.username: admin.password_hash for admin in settings.admins}
 
     if username in admins and check_password_hash(admins.get(username), password):
         return username

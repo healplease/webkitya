@@ -9,8 +9,9 @@ main_bp = Blueprint("main", __name__)
 @main_bp.route("/")
 def index():
     images = []
-    settings = Settings.objects(environment=current_app.env).first()
-    album_ids = settings.get_album_ids()
+    settings = Settings.get(env=current_app.env)
+    album_ids = settings.get_album_ids() if settings else []
+
     for album_id in album_ids:
         images.extend(get_album_images(
             album_id=album_id,
@@ -18,4 +19,4 @@ def index():
             client_secret=current_app.config["IMGUR_CLIENT_SECRET"]
         ))
 
-    return render_template("index.html", images=images)
+    return render_template("index.html", images=images, settings=settings)

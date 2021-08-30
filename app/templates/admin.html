@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-sm-8">
+            <div class="h1">Welcome to kitya's admin page, {{ current_user }}!</div>
+        </div>
+        <div class="col-sm-4">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-info">List of admins: </li>
+                {% for admin in settings.admins %}
+                <li class="list-group-item
+                {% if admin.is_owner %}list-group-item-primary{% endif %}
+                {% if admin.disabled %}list-group-item-light{% endif %}
+                ">
+                    <p class="float-left">{{ admin.username }}</p>
+                    <p class="float-right text-secondary">{{ moment(admin.last_login).fromNow() }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var csrf_token = "{{ csrf_token() }}";
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrf_token);
+            }
+        }
+    });
+</script>
+{% endblock %}

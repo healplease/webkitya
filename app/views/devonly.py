@@ -7,12 +7,14 @@ devonly_bp = Blueprint("devonly", __name__)
 
 @devonly_bp.route("/settings")
 def create_settings_if_not_exist():
-    settings = Settings.objects(environment=current_app.env).first()
+    settings = Settings.get(env=current_app.env)
+    if not Admin.objects():
+        Admin.new("admin", "admin")
     if not settings:
         settings = Settings.objects.create(
             environment=current_app.env,
-            admins=[Admin.new("admin", "admin")],
+            admins=[x for x in Admin.objects()],
             social_medias=[],
             albums=[],
         )
-    return Settings.objects(environment=current_app.env).first().as_dict
+    return Settings.get(env=current_app.env).as_dict

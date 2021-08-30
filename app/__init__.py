@@ -5,6 +5,7 @@ from flask import Flask
 from flask_mongoengine import MongoEngine
 from flask_bootstrap import Bootstrap
 from flask_wtf import CSRFProtect
+from flask_moment import Moment
 
 from config import environment_configs
 
@@ -15,6 +16,7 @@ dotenv.load_dotenv()
 mongoengine = MongoEngine()
 bootstrap = Bootstrap()
 csrf_protect = CSRFProtect()
+moment = Moment()
 
 
 def create_app():
@@ -36,6 +38,7 @@ def create_app():
     mongoengine.init_app(app)
     bootstrap.init_app(app)
     csrf_protect.init_app(app)
+    moment.init_app(app)
 
     for blueprint in blueprints_to_register:
         app.register_blueprint(blueprint)

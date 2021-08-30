@@ -2,38 +2,77 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="row mt-3">
-        <div class="col-sm-8">
-            <div class="h1">Welcome to kitya's admin page, {{ current_user }}!</div>
+<div class="container bg-dark text-light">
+    <div class="row pb-3 pt-2">
+
+        {# title #}
+        <div class="col-sm-12 mb-3">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <a class="btn btn-light" href="{{ url_for('main.index') }}">&lt; Back to main</a>
+                </div>
+                
+                <div class="h3 pl-3">
+                    Welcome to kitya's admin page, {{ current_user.username }}!
+                </div>
+            </div>
         </div>
-        <div class="col-sm-4">
+
+        {# settings #}
+        <div class="col-sm-8">
+            <div class="h5">Albums</div>
             <ul class="list-group">
-                <li class="list-group-item list-group-item-info">List of admins: </li>
-                {% for admin in settings.admins %}
-                <li class="list-group-item
+                {% for album in settings.albums %}
+                {% set album_id = album.strip('/').split('/')[-1] %}
+                <li class="list-group-item px-3" data-albumid="{{ album_id }}">
+                    <div class="d-flex justify-content-between" id="show-block-{{ album_id }}">
+                        <a href="{{ album }}" target="_blank" class="btn btn-link p-0">{{ album }}</a>
+                        <div class="btn-group">
+                            <button class="btn btn-warning py-0" name="btn-edit">Edit</button>
+                            <button class="btn btn-danger py-0" name="btn-delete">Delete</button>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between" style="display: none !important;" id="edit-block-{{ album_id }}">
+                        <div class="w-50">
+                            <input type="text" class="form-control px-1 py-0" placeholder="URL or album ID" value="{{ album }}">
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-success py-0" name="btn-save">Save</button>
+                            <button class="btn btn-secondary py-0" name="btn-discard">Discard</button>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+                <li class="list-group-item px-3 d-flex justify-content-between">
+                    <div class="w-50">
+                        <input type="text" class="form-control px-1 py-0" placeholder="URL or album ID">
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-success py-0">Add</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        {# info #}
+        <div class="col-sm-4">
+            <div class="h5">Last seen</div>
+            <ul class="list-group">
+                {% for admin in settings.admins|sort(reverse=True, attribute="last_login") %}
+                <li class="list-group-item 
+                {% if not admin.is_owner %}list-group-item-light text-dark{% endif %}
                 {% if admin.is_owner %}list-group-item-primary{% endif %}
-                {% if admin.disabled %}list-group-item-light{% endif %}
+                {% if admin.disabled %}disabled{% endif %}
                 ">
-                    <p class="float-left">{{ admin.username }}</p>
-                    <p class="float-right text-secondary">{{ moment(admin.last_login).fromNow() }}</p>
+                    <div class="d-flex justify-content-between">
+                        <p>{{ admin.username }}</p>
+                        <p>{{ moment(admin.last_login).fromNow() }}</p>
+                    </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
     </div>
 </div>
-
-
-<script type="text/javascript">
-    var csrf_token = "{{ csrf_token() }}";
-
-    $.ajaxSetup({
-        beforeSend: function(xhr, settings) {
-            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrf_token);
-            }
-        }
-    });
-</script>
 {% endblock %}

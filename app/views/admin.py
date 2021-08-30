@@ -11,6 +11,7 @@ admin_bp = Blueprint("admin", __name__)
 @admin_bp.route("/admin", methods=["GET", "POST"])
 @auth.login_required
 def admin():
-    Settings.objects(admins__username=auth.current_user()).update(set__admins__S__last_login=datetime.utcnow())
+    Admin.objects(username=auth.current_user()).update(last_login=datetime.utcnow())
+    current_user = Admin.objects(username=auth.current_user()).first()
     settings = Settings.get(env=current_app.env)
-    return render_template("admin.html", settings=settings, current_user=auth.current_user())
+    return render_template("admin.html", settings=settings, current_user=current_user)

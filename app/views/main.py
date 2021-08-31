@@ -10,7 +10,7 @@ main_bp = Blueprint("main", __name__)
 def index():
     images = []
     settings = Settings.get(env=current_app.env)
-    album_ids = settings.get_album_ids() if settings else []
+    album_ids = [x.album_id for x in settings.albums] if settings else []
 
     for album_id in album_ids:
         images.extend(get_album_images(

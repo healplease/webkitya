@@ -1,1 +1,1 @@
-from .settings import Settings, Admin, SocialMedia
+from .settings import Settings, Admin, SocialMedia, Album

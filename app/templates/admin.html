@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-
 <div class="container bg-dark text-light">
     <div class="row pb-3 pt-2">
-
-        {# title #}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {# title - row 1 #}
         <div class="col-sm-12 mb-3">
             <div class="d-flex justify-content-between">
                 <div>
@@ -17,42 +16,63 @@
                 </div>
             </div>
         </div>
-
+        
+        {# main - row 2 #}
         {# settings #}
         <div class="col-sm-8">
             <div class="h5">Albums</div>
-            <ul class="list-group">
-                {% for album in settings.albums %}
-                {% set album_id = album.strip('/').split('/')[-1] %}
-                <li class="list-group-item px-3" data-albumid="{{ album_id }}">
-                    <div class="d-flex justify-content-between" id="show-block-{{ album_id }}">
-                        <a href="{{ album }}" target="_blank" class="btn btn-link p-0">{{ album }}</a>
-                        <div class="btn-group">
-                            <button class="btn btn-warning py-0" name="btn-edit">Edit</button>
-                            <button class="btn btn-danger py-0" name="btn-delete">Delete</button>
+            <div class>
+                <ul class="list-group" id="albums">
+                    {% for album in settings.albums %}
+                    <li class="list-group-item px-3" data-albumid="{{ album.album_id }}">
+                        <div class="d-flex justify-content-between" id="show-block-{{ album.album_id }}">
+                            <a href="{{ album.permalink }}" target="_blank" class="btn btn-link p-0 pl-1">{{ album.link_or_album_id }}</a>
+                            <div class="btn-group">
+                                <button class="btn btn-warning py-0" name="btn-edit-album">Edit</button>
+                                <button class="btn btn-danger py-0" name="btn-delete-album">Delete</button>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="d-flex justify-content-between" style="display: none !important;" id="edit-block-{{ album_id }}">
-                        <div class="w-50">
-                            <input type="text" class="form-control px-1 py-0" placeholder="URL or album ID" value="{{ album }}">
+                        <div class="d-flex justify-content-between" style="display: none !important;" id="edit-block-{{ album.album_id }}">
+                            <div class="w-50">
+                                <input type="text" name="link_or_album_id" class="form-control px-1 py-0" 
+                                    placeholder="URL or album ID" style="height: auto;" value="{{ album.link_or_album_id }}">
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary py-0" name="btn-discard-album">Discard</button>
+                                <button class="btn btn-success py-0" name="btn-save-album">Save</button>
+                            </div>
                         </div>
-                        <div class="btn-group">
-                            <button class="btn btn-success py-0" name="btn-save">Save</button>
-                            <button class="btn btn-secondary py-0" name="btn-discard">Discard</button>
+                    </li>
+                    {% endfor %}
+                    <li class="list-group-item px-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="w-50">
+                                <input type="text" name="link_or_album_id" class="form-control px-1 py-0" 
+                                    placeholder="URL or album ID" style="height: auto;">
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-success py-0" name="btn-add-album">Add</button>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="h5 pt-3">Columns</div>
+            <div class="d-flex justify-content-between px-3">
+                {% for i in (1, 2, 3, 4, 6, 12) %}
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="columns" id="columns{{ i }}" value="{{ i }}"
+                    {% if i == settings.cols %}checked{% endif %}>
+                    <label class="form-check-label py-1" for="columns{{ i }}">
+                        {{ i }}
+                    </label>
+                </div>
                 {% endfor %}
-                <li class="list-group-item px-3 d-flex justify-content-between">
-                    <div class="w-50">
-                        <input type="text" class="form-control px-1 py-0" placeholder="URL or album ID">
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-success py-0">Add</button>
-                    </div>
-                </li>
-            </ul>
+                <div class="form-check"><button class="btn btn-success py-0" name="btn-save-album">Save</button></div>
+            </div>
+
         </div>
 
         {# info #}
@@ -73,6 +93,17 @@
                 {% endfor %}
             </ul>
         </div>
+
+        {# spinner - row 3 #}
+        <div class="col-sm-12 px-3">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" id="spinner" role="status" style="opacity: 0;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        {# footer - row 4 (maybe) #}
     </div>
 </div>
 {% endblock %}

@@ -1,9 +1,9 @@
 from urllib.parse import urlencode
 
 import dotenv
+import flask_bootstrap
 from flask import Flask
 from flask_mongoengine import MongoEngine
-from flask_bootstrap import Bootstrap
 from flask_wtf import CSRFProtect
 from flask_moment import Moment
 
@@ -13,8 +13,13 @@ from app.views import blueprints_to_register, blueprints_to_register_dev_only
 
 dotenv.load_dotenv()
 
+# bootstrap 4.2.1 supports spinners
+flask_bootstrap.BOOTSTRAP_VERSION = "4.2.1"
+flask_bootstrap.POPPER_VERSION = "1.14.6"
+flask_bootstrap.JQUERY_VERSION = "3.6.0"
+
 mongoengine = MongoEngine()
-bootstrap = Bootstrap()
+bootstrap = flask_bootstrap.Bootstrap()
 csrf_protect = CSRFProtect()
 moment = Moment()
 
@@ -35,8 +40,8 @@ def create_app():
 
     app.logger.info(f"Connection to database: {mongodb_settings['db']}")
 
-    mongoengine.init_app(app)
     bootstrap.init_app(app)
+    mongoengine.init_app(app)
     csrf_protect.init_app(app)
     moment.init_app(app)
 

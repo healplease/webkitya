@@ -4,7 +4,7 @@ lang="en"
 {% endblock %}
 {% block head %}
 {{ super() }}
-<meta name="csrf-token" content="{{ csrf_token() }}">
+{{ moment.include_moment() }}
 {% endblock %}
 {% block styles %}
 {{ super() }}

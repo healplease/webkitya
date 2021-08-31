@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container bg-dark text-light">
+    <div class="row">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        {# title - row 1 #}
+        <div class="col-sm-12">
+            <div class="d-flex justify-content-between pt-3">
+                <div>
+                    <a class="btn btn-light" href="{{ url_for('main.index') }}">&lt; Back to main</a>
+                </div>
+                
+                <div class="h3 pl-3">
+                    Welcome to kitya's admin page, {{ current_user.username }}!
+                </div>
+            </div>
+        </div>
+        
+        {# main - row 2 #}
+        {# settings #}
+        <div class="col-sm-8">
+            <div class="h5 pt-3">Columns</div>
+            <ul class="list-group" id="columns">
+                <li class="list-group-item d-flex justify-content-between text-dark px-3">
+                    {% for i in (1, 2, 3, 4, 6, 12) %}
+                    <div class="form-check">
+                        <input class="form-check-input py-0" type="radio" 
+                            name="columns" id="columns{{ i }}" value="{{ i }}"
+                            {% if i == settings.cols %}checked{% endif %}>
+                        <label class="form-check-label py-1" for="columns{{ i }}">{{ i }}</label>
+                    </div>
+                    {% endfor %}
+                    <div class="form-check"><button class="btn btn-success py-0" name="btn-save-cols">Save</button></div>
+                </li>
+            </ul>
+
+            <div class="h5 pt-3">Albums</div>
+            <div class>
+                <ul class="list-group" id="albums">
+                    {% for album in settings.albums %}
+                    <li class="list-group-item px-3" data-albumid="{{ album.album_id }}">
+                        <div class="d-flex justify-content-between" role="view">
+                            <div class="w-50">
+                                <a href="{{ album.permalink }}" target="_blank" class="btn btn-link p-0 pl-1 text-truncate">
+                                    {{ album.link_or_album_id }}
+                                </a>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-warning py-0" name="btn-edit-album">Edit</button>
+                                <button class="btn btn-danger py-0" name="btn-delete-album">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between" role="edit" style="display: none !important;">
+                            <div class="w-50">
+                                <input type="text" name="link_or_album_id" class="form-control px-1 py-0" 
+                                    placeholder="URL or album ID" style="height: auto;" value="{{ album.link_or_album_id }}">
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary py-0" name="btn-discard-album">Discard</button>
+                                <button class="btn btn-success py-0" name="btn-save-album">Save</button>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    <li class="list-group-item px-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="w-50">
+                                <input type="text" name="link_or_album_id" class="form-control px-1 py-0" 
+                                    placeholder="URL or album ID" style="height: auto;">
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-success py-0" name="btn-add-album">Add</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="h5 pt-3">Social media</div>
+            <div class>
+                <ul class="list-group" id="social-media">
+                    {% for media in settings.social_medias %}
+                    <li class="list-group-item px-3" data-link="{{ media.link }}">
+                        <div class="d-flex justify-content-between" role="view">
+                            <div class="pt-1" style="margin-top: 0.3em; margin-bottom: 0.33em;">
+                                <img class="rounded mx-auto align-middle" src="{{ media.icon }}" height="32px">
+                                <a href="{{ media.link }}" target="_blank" class="btn btn-link py-2 pl-1 align-middle text-truncate"
+                                    style="width: calc(75%);">
+                                    {{ media.link }}
+                                </a>
+                            </div>
+                            <div class="btn-group-vertical">
+                                <button class="btn btn-warning py-0" name="btn-edit-media">Edit</button>
+                                <button class="btn btn-danger py-0" name="btn-delete-media">Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between" role="edit" style="display: none !important;">
+                            <div class="w-50">
+                                <input type="text" name="media_icon" class="form-control px-1 py-0" 
+                                    placeholder="Link to icon" style="height: auto;" value="{{ media.icon }}">
+                                <input type="text" name="media_link" class="form-control px-1 py-0 mt-1" 
+                                    placeholder="Link to social media" style="height: auto;" value="{{ media.link }}">
+                            </div>
+                            <div class="btn-group-vertical">
+                                <button class="btn btn-secondary py-0" name="btn-discard-media">Discard</button>
+                                <button class="btn btn-success py-0" name="btn-save-media">Save</button>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    <li class="list-group-item px-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="w-50">
+                                <input type="text" name="media_icon" class="form-control px-1 py-0" 
+                                    placeholder="Link to icon" style="height: auto;">
+                                <input type="text" name="media_link" class="form-control px-1 py-0 mt-1" 
+                                    placeholder="Link to social media" style="height: auto;">
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-success py-0" name="btn-add-media">Add</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="h5 pt-3">Access</div>
+            <div class>
+                <ul class="list-group text-dark" id="access">
+                    {% for admin in settings.admins %}
+                    <li class="list-group-item px-3" data-username="{{ admin.username }}">
+                        <div class="d-flex justify-content-between" role="view">
+                            <div class="m-1">{{ admin.username }} 
+                                {% if admin.is_owner %}<span class="badge badge-success" style="cursor: pointer"
+                                data-toggle="tooltip" title="User with this credentials can add, edit and delete credentials.">
+                                owner</span>
+                                {% else %}<span class="badge badge-info" style="cursor: pointer"
+                                data-toggle="tooltip" title="User with this credentials can not add, edit and delete credentials.">
+                                admin</span>
+                                {% endif %}
+                                {% if admin.disabled %}<span class="badge badge-secondary" style="cursor: pointer"
+                                data-toggle="tooltip" title="User with this credentials can not use admin page.">
+                                disabled</span>{% endif %}
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-warning py-0" name="btn-edit-admin"
+                                {% if not current_user.is_owner %}disabled{% endif %}>Edit</button>
+                                <button class="btn btn-danger py-0" name="btn-delete-admin"
+                                {% if not current_user.is_owner %}disabled{% endif %}>Delete</button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between" role="edit" style="display: none !important;">
+                            <div class="row">
+                                <div class="col">
+                                    <input type="password" name="old_password" class="form-control px-1 py-0" 
+                                    placeholder="Old password" style="height: auto;">
+                                </div>
+                                <div class="col">
+                                    <input type="password" name="new_password" class="form-control px-1 py-0" 
+                                    placeholder="New password" style="height: auto;">
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input py-0" name="disabled"
+                                        {% if admin.disabled %}checked{% endif %}>
+                                        <label class="form-check-label py-1" for="disabled">Disabled</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-secondary py-0" name="btn-discard-admin">Discard</button>
+                                <button class="btn btn-success py-0" name="btn-save-admin">Save</button>
+                            </div>
+                        </div>
+                    </li>
+
+                    {% endfor %}
+                    <li class="list-group-item px-3">
+                        <div class="d-flex justify-content-between">
+                            <div class="row">
+                                <div class="col">
+                                    <input type="text" name="username" class="form-control px-1 py-0" 
+                                    placeholder="Username" style="height: auto;"
+                                    {% if not current_user.is_owner %}disabled{% endif %}>
+                                </div>
+                                <div class="col">
+                                    <input type="password" name="password" class="form-control px-1 py-0" 
+                                    placeholder="Password" style="height: auto;"
+                                    {% if not current_user.is_owner %}disabled{% endif %}>
+                                </div>
+                                <div class="col">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input py-0" name="disabled">
+                                        <label class="form-check-label py-1" for="disabled"
+                                        {% if not current_user.is_owner %}disabled{% endif %}>Disabled</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-success py-0" name="btn-add-admin"
+                                {% if not current_user.is_owner %}disabled{% endif %}>Add</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        {# info #}
+        <div class="col-sm-4">
+            <div class="h5 pt-3">Last seen</div>
+            <ul class="list-group">
+                {% for admin in settings.admins|sort(reverse=True, attribute="last_login") %}
+                <li class="list-group-item 
+                {% if not admin.is_owner %}list-group-item-light text-dark{% endif %}
+                {% if admin.is_owner %}list-group-item-primary{% endif %}
+                {% if admin.disabled %}disabled{% endif %}
+                ">
+                    <div class="d-flex justify-content-between">
+                        <p>{{ admin.username }}{% if admin.disabled %}<span class="text-secondary">(disabled)</span>{% endif %}</p>
+                        <p>{{ moment(admin.last_login).fromNow() }}</p>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {# spinner - row 3 #}
+        <div class="col-sm-12 py-2">
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border" id="spinner" role="status" style="opacity: 0;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        {# footer - row 4 (maybe) #}
+    </div>
+</div>
+{% endblock %}

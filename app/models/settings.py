@@ -28,11 +28,10 @@ class Admin(Document):
 
     @classmethod
     def upd(cls, username, old_password, new_password):
-        if check_password_hash(self.password_hash, old_password):
+        if check_password_hash(cls.objects(username=username).first().password_hash, old_password):
             new_password_hash = generate_password_hash(new_password)
             return cls.objects(username=username).update(password_hash=new_password_hash)
         return False
-        
 
     @property
     def last_login_timestamp(self):
@@ -50,7 +49,7 @@ class Admin(Document):
 
 
 class SocialMedia(Document):
-    icon = URLField()
+    icon = URLField(required=True)
     link = URLField()
 
     @property

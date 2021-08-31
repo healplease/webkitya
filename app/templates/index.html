@@ -7,7 +7,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            {% set cols = 3 %}
+            {% set cols = settings.cols %}
             {% for i in range(1, cols + 1) %}
             <div class="col-sm-{{ 12 // cols }} px-{{ 1 if cols > 6 else 2}}">
                 {% for image in images %}

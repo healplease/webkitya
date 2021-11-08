@@ -9,8 +9,6 @@ from flask_moment import Moment
 
 from config import environment_configs
 
-from app.views import blueprints_to_register, blueprints_to_register_dev_only
-
 dotenv.load_dotenv()
 
 # bootstrap 4.2.1 supports spinners
@@ -44,12 +42,5 @@ def create_app():
     mongoengine.init_app(app)
     csrf_protect.init_app(app)
     moment.init_app(app)
-
-    for blueprint in blueprints_to_register:
-        app.register_blueprint(blueprint)
-
-    if app.env == "local":
-        for blueprint in blueprints_to_register_dev_only:
-            app.register_blueprint(blueprint)
 
     return app

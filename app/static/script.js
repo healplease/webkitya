@@ -6,6 +6,7 @@ updateCSRFtoken = () => {
         beforeSend: function(xhr, settings) {
             if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", $('input[name="csrf_token"]').val());
+                xhr.setRequestHeader("Authorization", "Basic " + $('input[name="http_auth"]').val());
             }
         }
     });
@@ -79,8 +80,9 @@ $(document).on( "click", "button[name='btn-delete-album']", event => {
 $(document).on( "click", "button[name='btn-save-album']", event => {
     let album_id = $( event.currentTarget ).closest("li").attr("data-albumid");
     let link_or_album_id =  $( event.currentTarget ).closest("li").find("input[name='link_or_album_id']").val();
+    let art_page = $( event.currentTarget ).closest("li").find("select[name='page']").find(":selected").val();
     sendJSON(
-        "/admin/edit-album", { album_id: album_id, link_or_album_id: link_or_album_id }, 
+        "/admin/edit-album", { album_id: album_id, link_or_album_id: link_or_album_id, art_page: art_page }, 
         () => { $("#albums").load("/admin #albums", disableLoader) }
     );
 });
@@ -90,8 +92,9 @@ $(document).on( "click", "button[name='btn-save-album']", event => {
 
 $(document).on( "click", "button[name='btn-add-album']", event => {
     let link_or_album_id =  $( event.currentTarget ).closest("li").find("input[name='link_or_album_id']").val();
+    let art_page = $( event.currentTarget ).closest("li").find("select[name='page']").find(":selected").val();
     sendJSON(
-        "/admin/add-album", { link_or_album_id: link_or_album_id }, 
+        "/admin/add-album", { link_or_album_id: link_or_album_id, art_page: art_page }, 
         () => { $("#albums").load("/admin #albums", disableLoader) }
     );
 });
@@ -201,6 +204,57 @@ $(document).on( "click", "button[name='btn-add-admin']", event => {
     sendJSON(
         "/admin/add-admin", { username: username, password: password, disabled: disabled }, 
         () => { $("#access").load("/admin #access", disableLoader) }
+    );
+});
+
+///////////////////////////////////////////////////////
+// on edit page - show edit block and hide view block
+
+$(document).on( "click", "button[name='btn-edit-page']", event => {
+    $( event.currentTarget ).closest("li").find("div[role='view']").attr('style','display:none !important;');
+    $( event.currentTarget ).closest("li").find("div[role='edit']").attr('style','display:flex !important;');
+    $( event.currentTarget ).closest("li").find("input[name='title']").select();
+});
+
+///////////////////////////////////////////////////////
+// on discard page - show view block and hide edit block
+
+$(document).on( "click", "button[name='btn-discard-page']", event => {
+    $( event.currentTarget ).closest("li").find("div[role='edit']").attr('style','display:none !important;');
+    $( event.currentTarget ).closest("li").find("div[role='view']").attr('style','display:flex !important;');
+});
+
+///////////////////////////////////////////////////////
+// on delete page - send ajax request 
+
+$(document).on( "click", "button[name='btn-delete-page']", event => {
+    let slug = $( event.currentTarget ).closest("li").attr("data-slug");
+    sendJSON(
+        "/admin/delete-page", { slug: slug }, 
+        () => { $("#pages").load("/admin #pages", disableLoader) }
+    );
+});
+
+///////////////////////////////////////////////////////
+// on save page - send ajax request
+
+$(document).on( "click", "button[name='btn-save-page']", event => {
+    let slug = $( event.currentTarget ).closest("li").attr("data-slug");
+    let new_title = $( event.currentTarget ).closest("li").find("input[name='title']").val();
+    sendJSON(
+        "/admin/edit-page", { slug: slug, title: new_title }, 
+        () => { $("#pages").load("/admin #pages", disableLoader) }
+    );
+});
+
+///////////////////////////////////////////////////////
+// on add page - send ajax request
+
+$(document).on( "click", "button[name='btn-add-page']", event => {
+    let title = $( event.currentTarget ).closest("li").find("input[name='title']").val();
+    sendJSON(
+        "/admin/add-page", { title: title }, 
+        () => { $("#pages").load("/admin #pages", disableLoader) }
     );
 });
 

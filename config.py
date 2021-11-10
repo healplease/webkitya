@@ -9,9 +9,10 @@ class Config():
     MONGODB_HOST = os.environ.get("FLASK_MONGODB_HOST")
     MONGODB_PORT = os.environ.get("FLASK_MONGODB_PORT")
     MONGODB_DB = "kitya"
-
     MONGODB_PROTOCOL = "mongodb+srv"
     MONGODB_ARGUMENTS = {"retryWrites": "true", "w": "majority"}
+
+    FLASK_ADMIN_SWATCH = "journal"
 
 
 class LocalConfig(Config):

@@ -46,4 +46,7 @@ def create_app():
     moment.init_app(app)
     admin.init_app(app)
 
+    from app.views.main import main_bp
+    app.register_blueprint(main_bp)
+
     return app

@@ -12,7 +12,6 @@ class Config():
     MONGODB_PROTOCOL = "mongodb+srv"
     MONGODB_ARGUMENTS = {"retryWrites": "true", "w": "majority"}
 
-    BOOTSTRAP_BOOTSWATCH_THEME = "journal"
     FLASK_ADMIN_SWATCH = "journal"
 
 

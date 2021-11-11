@@ -8,6 +8,7 @@ lang="en"
 {% endblock %}
 {% block styles %}
 {{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='mastfoot.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% endblock %}
 {% block scripts %}

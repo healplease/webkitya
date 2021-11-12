@@ -53,6 +53,8 @@ def create_app():
         pass
 
     from app.views.main import main_bp
+    from app.views.portfolio import portfolio_bp
     app.register_blueprint(main_bp)
+    app.register_blueprint(portfolio_bp)
 
     return app

@@ -8,6 +8,4 @@ class MainPageAdminView(ModelView):
 
 
 class SocialMediaAdminView(ModelView):
-    column_list = ("active", "link", "icon", "name", )
-    column_sortable_list = ("active", )
     page_size = 10

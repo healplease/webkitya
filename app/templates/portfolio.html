@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<body class="text-center" style="
+        background-size: cover;
+        background-repeat: no-repeat;
+        {% if content.background_image %}
+        background-image: url({{ content.background_image }})
+        {% endif %}">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <header class="masthead">
+            {% include "include/nav.html" %}
+        </header>
+        <main class="inner cover" style="height: calc(100% - 26px); overflow-y: scroll;">
+            <div class="inner">
+                {% if content.body %}
+                    <p class="lead">{{ content.body }}</p>
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-6 m-0 p-0 pr-1">
+                    {% for image in images[::2] %}
+                        <div class="img-thumbnail mb-2">
+                            <img class="img" src="{{ image.thumbnail_url or image.url }}" style="width: 100%;">
+                            {% if image.name %}
+                                <p class="m-0 p-0 w-100 text-dark">{{ image.name }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-6 m-0 p-0 pl-1">
+                    {% for image in images[1::2] %}
+                        <img class="img img-thumbnail mb-2" src="{{ image.thumbnail_url or image.url }}">
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+        <footer class="mastfoot mt-auto">
+        </footer>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,13 @@
+<div class="inner">
+    <h3 class="masthead-brand">Kitya</h3>
+    <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link {% if request.url_rule.endpoint == 'main.index' %}active{% endif %}" 
+                href="{{ url_for('main.index') }}">Home</a>
+        <a class="nav-link {% if request.url_rule.endpoint == 'portfolio.portfolio' %}active{% endif %}" 
+                href="{{ url_for('portfolio.portfolio') }}">Portfolio</a>
+        <a class="nav-link {% if request.url_rule.endpoint == '#' %}active{% endif %}" 
+                href="#">Commissions</a>
+        <a class="nav-link {% if request.url_rule.endpoint == '#' %}active{% endif %}" 
+                href="#">Prints</a>
+    </nav>
+</div>

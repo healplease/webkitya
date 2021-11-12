@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-<body class="text-center">
+<body class="text-center" style="
+        background-size: cover;
+        background-repeat: no-repeat;
+        {% if content.background_image %}
+        background-image: url({{ content.background_image }})
+        {% endif %}">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="masthead mb-auto">
             <div class="inner">
@@ -15,17 +20,24 @@
         </header>
         <main class="inner cover">
             <h1 class="cover-heading">
-                Kitya
+                {{ content.header }}
             </h1>
             <p class="lead">
-                Hello! My name is kitya and I'm...
+                {{ content.body }}
             </p>
             <p class="lead">
-                <a href="#" class="btn btn-lg btn-secondary">See what I'm doing</a>
+                <a href="#" class="btn btn-lg btn-secondary">{{ content.button_text }}</a>
             </p>
         </main>
         <footer class="mastfoot mt-auto">
-            TODO: links to social media
+            <div class="justify-content-center">
+                {% for media in social_media %}
+                <a href="{{ media.link }}" style="text-decoration: none;" class="px-2" target="_blank">
+                    <img style="height: 1.25em; width: 1.25em;" src="{{ media.icon }}" class="img rounded">
+                    <span class="pl-1">{{ media.name }}</span>
+                </a>
+                {% endfor %}
+            </div>
         </footer>
     </div>
 </body>

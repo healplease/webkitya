@@ -12,8 +12,6 @@ class Config():
     MONGODB_PROTOCOL = "mongodb+srv"
     MONGODB_ARGUMENTS = {"retryWrites": "true", "w": "majority"}
 
-    FLASK_ADMIN_SWATCH = "journal"
-
 
 class LocalConfig(Config):
     pass

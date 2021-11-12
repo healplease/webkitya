@@ -9,7 +9,7 @@ class MainPage(Document):
 
 
 class SocialMedia(Document):
-    active = BooleanField(default=True, required=True)
+    active = BooleanField(default=True)
     link = URLField(required=True)
     icon = URLField(required=True)
     name = StringField(required=False)

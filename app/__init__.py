@@ -2,11 +2,12 @@ from urllib.parse import urlencode
 
 import dotenv
 import flask_bootstrap
-from flask import Flask
+from flask import Flask, request
 from flask_mongoengine import MongoEngine
 from flask_wtf import CSRFProtect
 from flask_moment import Moment
 
+from app.auth import auth
 from config import environment_configs
 
 dotenv.load_dotenv()
@@ -44,7 +45,12 @@ def create_app():
     moment.init_app(app)
 
     from app.admin import admin_init_app
-    admin_init_app(app)
+    admin = admin_init_app(app)
+
+    @app.before_request
+    @auth.login_required
+    def protect_admin_views():
+        pass
 
     from app.views.main import main_bp
     app.register_blueprint(main_bp)

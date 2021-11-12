@@ -12,6 +12,11 @@ class Config():
     MONGODB_PROTOCOL = "mongodb+srv"
     MONGODB_ARGUMENTS = {"retryWrites": "true", "w": "majority"}
 
+    # FLASK_ADMIN_SWATCH = "journal"
+
+    ADMIN_USERNAME = os.environ.get("FLASK_ADMIN_USERNAME")
+    ADMIN_PASSWORD_HASH = os.environ.get("FLASK_ADMIN_PASSWORD_HASH")
+
 
 class LocalConfig(Config):
     pass

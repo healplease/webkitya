@@ -13,5 +13,12 @@ class Categories:
 def admin_init_app(app):
     admin = Admin()
     admin.init_app(app)
-    admin.add_view(MainPageAdminView(MainPage, category=Categories.MAIN_PAGE))
-    admin.add_view(SocialMediaAdminView(SocialMedia, category=Categories.MAIN_PAGE))
+    views = [
+        MainPageAdminView(MainPage, category=Categories.MAIN_PAGE),
+        SocialMediaAdminView(SocialMedia, category=Categories.MAIN_PAGE),
+    ]
+
+    for view in views:
+        admin.add_view(view)
+
+    return admin

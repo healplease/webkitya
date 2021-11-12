@@ -1,0 +1,4 @@
+table.cf td {
+    overflow-x: hidden;
+    min-height: 1.25em;
+}

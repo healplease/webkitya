@@ -6,11 +6,11 @@
         {% if content.background_image %}
         background-image: url({{ content.background_image }})
         {% endif %}">
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div class="cover-container d-flex w-100 h-100 pt-3 mx-auto flex-column">
         <header class="masthead">
             {% include "include/nav.html" %}
         </header>
-        <main class="inner cover" style="height: calc(100% - 26px); overflow-y: scroll;">
+        <main class="inner cover" style="height: calc(100% - 36px); overflow-y: scroll;">
             <div class="inner">
                 {% if content.body %}
                     <p class="lead">{{ content.body }}</p>

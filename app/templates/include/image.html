@@ -1,0 +1,6 @@
+<div class="img-thumbnail mb-2">
+    <img class="img" src="{{ image.thumbnail_url or image.url }}" style="width: 100%;">
+    {% if image.name %}
+        <p class="m-0 p-0 w-100 text-dark">{{ image.name }}</p>
+    {% endif %}
+</div>

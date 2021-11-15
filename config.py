@@ -12,18 +12,23 @@ class Config():
     MONGODB_PROTOCOL = "mongodb+srv"
     MONGODB_ARGUMENTS = {"retryWrites": "true", "w": "majority"}
 
-    # FLASK_ADMIN_SWATCH = "journal"
-
     ADMIN_USERNAME = os.environ.get("FLASK_ADMIN_USERNAME")
     ADMIN_PASSWORD_HASH = os.environ.get("FLASK_ADMIN_PASSWORD_HASH")
 
+    MAIL_SERVER = os.environ.get("FLASK_MAIL_SERVER")
+    MAIL_PORT = os.environ.get("FLASK_MAIL_PORT")
+    MAIL_USERNAME = os.environ.get("FLASK_MAIL_USERNAME")
+    MAIL_PASSWORD =os.environ.get("FLASK_MAIL_PASSWORD")
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
+
 
 class LocalConfig(Config):
-    pass
+    DEBUG = True
 
 
 class HerokuConfig():
-    pass
+    DEBUG = False
 
 
 class DevelopmentConfig(HerokuConfig, Config):

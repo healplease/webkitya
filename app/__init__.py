@@ -6,6 +6,7 @@ from flask import Flask, request
 from flask_mongoengine import MongoEngine
 from flask_wtf import CSRFProtect
 from flask_moment import Moment
+from flask_mail import Mail
 
 from app.auth import auth
 from config import environment_configs
@@ -21,6 +22,7 @@ mongoengine = MongoEngine()
 bootstrap = flask_bootstrap.Bootstrap()
 csrf_protect = CSRFProtect()
 moment = Moment()
+mail = Mail()
 
 
 def create_app():
@@ -43,6 +45,7 @@ def create_app():
     mongoengine.init_app(app)
     csrf_protect.init_app(app)
     moment.init_app(app)
+    mail.init_app(app)
 
     from app.admin import admin_init_app
     admin = admin_init_app(app)

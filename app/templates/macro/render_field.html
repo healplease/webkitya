@@ -1,0 +1,14 @@
+{% macro render_field(field) %}
+    <div class="form-group row mb-2">
+        <div class="col-sm-12">
+            {{ field(**kwargs)|safe }}
+        </div>
+        {% if field.errors %}
+        {% for error in field.errors %}
+        <div class="invalid-feedback">
+            {{ error }}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+{% endmacro %}

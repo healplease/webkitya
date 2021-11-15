@@ -54,7 +54,9 @@ def create_app():
 
     from app.views.main import main_bp
     from app.views.portfolio import portfolio_bp
+    from app.views.commissions import commissions_bp
     app.register_blueprint(main_bp)
     app.register_blueprint(portfolio_bp)
+    app.register_blueprint(commissions_bp)
 
     return app

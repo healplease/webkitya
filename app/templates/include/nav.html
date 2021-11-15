@@ -5,8 +5,8 @@
                 href="{{ url_for('main.index') }}">Home</a>
         <a class="nav-link {% if request.url_rule.endpoint == 'portfolio.portfolio' %}active{% endif %}" 
                 href="{{ url_for('portfolio.portfolio') }}">Portfolio</a>
-        <a class="nav-link {% if request.url_rule.endpoint == '#' %}active{% endif %}" 
-                href="#">Commissions</a>
+        <a class="nav-link {% if request.url_rule.endpoint == 'commissions.commissions' %}active{% endif %}" 
+                href="{{ url_for('commissions.commissions') }}">Commissions</a>
         <a class="nav-link {% if request.url_rule.endpoint == '#' %}active{% endif %}" 
                 href="#">Prints</a>
     </nav>

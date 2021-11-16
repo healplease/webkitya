@@ -28,7 +28,7 @@ class LocalConfig(Config):
 
 
 class HerokuConfig():
-    DEBUG = False
+    pass
 
 
 class DevelopmentConfig(HerokuConfig, Config):

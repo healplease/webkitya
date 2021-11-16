@@ -32,11 +32,11 @@ class HerokuConfig():
 
 
 class DevelopmentConfig(HerokuConfig, Config):
-    pass
+    MONGODB_DB = "kitya_dev"
 
 
 class ProductionConfig(HerokuConfig, Config):
-    pass
+    MONGODB_DB = "kitya_prod"
 
 
 environment_configs = {

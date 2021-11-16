@@ -9,6 +9,8 @@ from app.models.main import MainPage, SocialMedia
 from app.models.portfolio import PortfolioImage, PortfolioPage
 from app.models.commissions import CommissionsPage
 
+admin = Admin()
+
 
 class Categories:
     PAGES = "Pages"
@@ -17,7 +19,6 @@ class Categories:
 
 
 def admin_init_app(app):
-    admin = Admin()
     admin.init_app(app)
     views = (
         MainPageAdminView(MainPage, category=Categories.PAGES, name="Home page"),

@@ -1,4 +1,4 @@
-from flask import render_template, url_for, redirect, flash
+from flask import render_template, url_for, redirect, flash, request
 
 from app.domain.email import send_mail
 from app.views.commissions.forms import ContactUsForm

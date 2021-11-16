@@ -16,11 +16,13 @@
             </p>
             <p class="lead">
                 {% from "macro/render_field.html" import render_field %}
-                <form method="POST" action="{{ url_for('commissions.commissions') }}" class="form">
+                {% from "macro/render_file_upload.html" import render_file_upload %}
+                <form method="POST" action="{{ url_for('commissions.commissions') }}" class="form" enctype="multipart/form-data">
                     {{ form.csrf_token }}
                     {{ render_field(form.contact, class="form-control", placeholder="Your email") }}
                     {{ render_field(form.subject, class="form-control", placeholder="Summary") }}
                     {{ render_field(form.body, class="form-control", placeholder="Descriprion") }}
+                    {{ render_file_upload(form.references, class="upload-files-button", accept="image/*", multiple=True) }}
                     {{ form.submit(class="btn btn-lg btn-secondary") }}
                 </form>
             </p>

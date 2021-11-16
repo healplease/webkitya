@@ -46,6 +46,7 @@ def create_app():
     csrf_protect.init_app(app)
     moment.init_app(app)
     mail.init_app(app)
+    app.extensions["mail"].debug = 0
 
     from app.admin import admin_init_app
     admin = admin_init_app(app)

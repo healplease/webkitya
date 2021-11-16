@@ -1,0 +1,16 @@
+{% macro render_file_upload(field) %}
+    <div class="form-group row mb-2">
+        <div class="col-sm-12">
+            {{ field.label(class="btn btn-lg btn-info btn-block") }}
+            <sup>Send images up to 2 MB</sup>
+        </div>
+        {{ field(**kwargs)|safe }}
+        {% if field.errors %}
+        {% for error in field.errors %}
+        <div class="invalid-feedback">
+            {{ error }}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+{% endmacro %}

@@ -10,5 +10,5 @@ class ContactUsForm(FlaskForm):
     subject = StringField("subject", validators=[DataRequired()])
     contact = EmailField("email", validators=[DataRequired()])
     body = TextAreaField("body", validators=[DataRequired()])
-    references = FileField('Upload your references', validators=[FileSize(2 * 1024 * 1024)])
+    references = FileField('Upload your references', validators=[FileSize(2 * 1024 * 1024, message="File is too big. Max upload size: 2 MB")])
     submit = SubmitField()

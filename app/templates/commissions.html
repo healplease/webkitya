@@ -21,7 +21,7 @@
                     {{ form.csrf_token }}
                     {{ render_field(form.contact, class="form-control", placeholder="Your email") }}
                     {{ render_field(form.subject, class="form-control", placeholder="Summary") }}
-                    {{ render_field(form.body, class="form-control", placeholder="Descriprion") }}
+                    {{ render_field(form.body, class="form-control", placeholder="Description") }}
                     {{ render_file_upload(form.references, class="upload-files-button", accept="image/*", multiple=True) }}
                     {{ form.submit(class="btn btn-lg btn-secondary") }}
                 </form>

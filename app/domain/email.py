@@ -10,8 +10,9 @@ def send_mail(contact: str, subject: str, body: str):
     msg = Message()
     msg.subject = f"[Commission] {subject}"
     msg.body = f"From: {contact}\n\n{body}"
-    msg.add_recipient("gavaalex2012@gmail.com")
-    msg.sender = ("Portfolio", "noreply@kitya.com")
+    for recipient in current_app.config.get("MAIL_RECIPIENTS", "").split(","):
+        msg.add_recipient(recipient)
+    msg.sender = ("Portfolio", current_app.config["MAIL_USERNAME"])
 
     for file in request.files.getlist("references"):
         msg.attach(file.filename, file.headers.get("Content-Type", "image/jpeg"), file.stream.read())

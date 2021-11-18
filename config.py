@@ -3,6 +3,7 @@ import os
 
 class Config():
     SECRET_KEY = os.environ.get("FLASK_SECRET_KEY")
+    SERVER_NAME = os.environ.get("FLASK_SERVER_NAME")
 
     MONGODB_USERNAME = os.environ.get("FLASK_MONGODB_USER")
     MONGODB_PASSWORD = os.environ.get("FLASK_MONGODB_PASSWORD")

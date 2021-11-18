@@ -5,6 +5,7 @@ lang="en"
 {% block head %}
 {{ super() }}
 {{ moment.include_moment() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 {% endblock %}
 {% block styles %}
 {{ super() }}

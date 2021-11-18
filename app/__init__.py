@@ -2,7 +2,7 @@ from urllib.parse import urlencode
 
 import dotenv
 import flask_bootstrap
-from flask import Flask, request
+from flask import Flask, url_for
 from flask_mongoengine import MongoEngine
 from flask_wtf import CSRFProtect
 from flask_moment import Moment

@@ -3,10 +3,11 @@ import traceback
 from flask import current_app, request
 from flask_mail import Message, Attachment
 from wtforms import MultipleFileField
+from werkzeug.formparser import FileStorage
 
 from app import mail
 
-def send_mail(contact: str, subject: str, body: str, files: list):
+def send_mail(contact: str, subject: str, body: str, files: list[FileStorage]):
     msg = Message()
     msg.subject = f"[Commission] {subject}"
     msg.body = f"From: {contact}\n\n{body}"

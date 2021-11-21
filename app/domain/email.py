@@ -16,6 +16,6 @@ def send_mail(contact: str, subject: str, body: str, files: list[FileStorage]):
     msg.sender = ("Portfolio", current_app.config["MAIL_USERNAME"])
 
     for file in files:
-        msg.attach(file.filename, file.headers.get("Content-Type", "image/jpeg"), file.stream.read())
+        msg.attach(file.filename, file.headers.get("Content-Type", "image/jpeg"), file.read())
 
     mail.send(msg)

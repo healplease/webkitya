@@ -11,7 +11,7 @@ def commissions():
 
     if form.validate_on_submit():
         try:
-            send_mail(form.contact.data, form.subject.data, form.body.data)
+            send_mail(form.contact.data, form.subject.data, form.body.data, ["references"])
             flash("Your message was successfully sent!", category="success")
         except Exception:
             flash("Your message wasn't sent. Try again later.", category="danger")

@@ -2,15 +2,27 @@ from urllib.parse import urlencode
 
 import dotenv
 import flask_bootstrap
+<<<<<<< HEAD
 from flask import Flask, url_for
 from flask_mongoengine import MongoEngine
 from flask_wtf import CSRFProtect
 from flask_moment import Moment
 from flask_mail import Mail
+=======
+from flask import Flask
+from flask_mongoengine import MongoEngine
+from flask_wtf import CSRFProtect
+from flask_moment import Moment
+>>>>>>> master
 
 from app.auth import auth
 from config import environment_configs
 
+<<<<<<< HEAD
+=======
+from app.views import blueprints_to_register, blueprints_to_register_dev_only
+
+>>>>>>> master
 dotenv.load_dotenv()
 
 # bootstrap 4.2.1 supports spinners
@@ -62,5 +74,9 @@ def create_app():
     app.register_blueprint(main_bp)
     app.register_blueprint(portfolio_bp)
     app.register_blueprint(commissions_bp)
+
+    if app.env == "local":
+        for blueprint in blueprints_to_register_dev_only:
+            app.register_blueprint(blueprint)
 
     return app

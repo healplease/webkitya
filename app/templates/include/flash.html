@@ -1,0 +1,10 @@
+<div class="fixed-bottom cover-container px-3" style="left: 0; right: 0; margin: auto">
+    {% for category, message in get_flashed_messages(with_categories=True) %}
+    <div class="alert alert-{{category}}">
+        {{ message }}
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+</div>

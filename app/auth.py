@@ -1,19 +1,15 @@
-from flask import current_app
+from flask import current_app, request
 from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import check_password_hash
 
-from app.models import Settings
+from app.admin import admin
 
 auth = HTTPBasicAuth()
 
-
 @auth.verify_password
-def verify_password(username, password):
-    settings = Settings.get(env=current_app.env)
-
-    if not settings or not settings.admins:
-        return False
-
-    for admin in settings.admins:
-        if check_password_hash(admin.password_hash, password) and not admin.disabled:
-            return username
+def protect_admin_views(username: str, password: str):
+    if str(request.url_rule).startswith(admin.url):
+        is_username_corrent = username == current_app.config["ADMIN_USERNAME"]
+        is_password_correct = check_password_hash(current_app.config["ADMIN_PASSWORD_HASH"], password)
+        return username if is_username_corrent and is_password_correct else False
+    return True

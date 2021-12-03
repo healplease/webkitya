@@ -2,14 +2,14 @@ from urllib.parse import urlencode
 
 import dotenv
 import flask_bootstrap
-from flask import Flask
+from flask import Flask, url_for
 from flask_mongoengine import MongoEngine
 from flask_wtf import CSRFProtect
 from flask_moment import Moment
+from flask_mail import Mail
 
+from app.auth import auth
 from config import environment_configs
-
-from app.views import blueprints_to_register, blueprints_to_register_dev_only
 
 dotenv.load_dotenv()
 
@@ -22,6 +22,7 @@ mongoengine = MongoEngine()
 bootstrap = flask_bootstrap.Bootstrap()
 csrf_protect = CSRFProtect()
 moment = Moment()
+mail = Mail()
 
 
 def create_app():
@@ -44,12 +45,22 @@ def create_app():
     mongoengine.init_app(app)
     csrf_protect.init_app(app)
     moment.init_app(app)
+    mail.init_app(app)
+    app.extensions["mail"].debug = 0
 
-    for blueprint in blueprints_to_register:
-        app.register_blueprint(blueprint)
+    from app.admin import admin_init_app
+    admin = admin_init_app(app)
 
-    if app.env == "local":
-        for blueprint in blueprints_to_register_dev_only:
-            app.register_blueprint(blueprint)
+    @app.before_request
+    @auth.login_required
+    def protect_admin_views():
+        pass
+
+    from app.views.main import main_bp
+    from app.views.portfolio import portfolio_bp
+    from app.views.commissions import commissions_bp
+    app.register_blueprint(main_bp)
+    app.register_blueprint(portfolio_bp)
+    app.register_blueprint(commissions_bp)
 
     return app

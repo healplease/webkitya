@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<body class="text-center" style="
+        background-size: cover;
+        background-repeat: no-repeat;
+        {% if content.background_image %}
+        background-image: url({{ content.background_image }})
+        {% endif %}">
+    <div class="cover-container d-flex w-100 h-100 pt-3 mx-auto flex-column">
+        <header class="masthead">
+            {% include "include/nav.html" %}
+        </header>
+        <main class="inner cover custom-scrollbar" style="height: calc(100% - 36px); overflow-y: scroll;">
+            <div class="inner">
+                {% if content.body %}
+                    <p class="lead">{{ content.body }}</p>
+                {% endif %}
+            </div>
+            <div class="row">
+                <div class="col-6 m-0 p-0 pr-1">
+                    {% for image in images[::2] %}
+                        {% include "include/image.html" %}
+                    {% endfor %}
+                </div>
+                <div class="col-6 m-0 p-0 pl-1">
+                    {% for image in images[1::2] %}
+                        {% include "include/image.html" %}
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+        <footer class="mastfoot mt-auto">
+            <div class="justify-content-center">
+            </div>
+        </footer>
+    </div>
+</body>
+{% endblock %}

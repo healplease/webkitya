@@ -63,8 +63,4 @@ def create_app():
     app.register_blueprint(portfolio_bp)
     app.register_blueprint(commissions_bp)
 
-    if app.env == "local":
-        for blueprint in blueprints_to_register_dev_only:
-            app.register_blueprint(blueprint)
-
     return app
